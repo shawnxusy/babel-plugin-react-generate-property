@@ -67,7 +67,7 @@ $ npm install babel-plugin-react-generate-property
 {
   "env": {
     "development": {
-      "plugins": [["react-generate-data-id", { "customProperty": "data-dev", dirLevel: 2, slashChar: '\' }]]
+      "plugins": [["react-generate-data-id", { "customProperty": "data-dev", "dirLevel": 2, "slashChar": "\" }]]
     }
   }
 }
