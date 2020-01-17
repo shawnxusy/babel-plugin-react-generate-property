@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-react-generate-property",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A plugin to automatically generate properties (for example data attributes) for all JSX open tags, using user specified convention",
   "main": "index.js",
   "scripts": {
