@@ -2,8 +2,14 @@
   "name": "babel-plugin-react-generate-property",
   "version": "1.0.2",
   "description": "A plugin to automatically generate properties (for example data attributes) for all JSX open tags, using user specified convention",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib"
+  },
   "scripts": {
+    "build": "babel src -d lib",
+    "build:watch": "babel src -w -d lib",
+    "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -26,6 +32,10 @@
   },
   "homepage": "https://github.com/shawnxusy/babel-plugin-react-generate-property#readme",
   "devDependencies": {
+    "@babel/cli": "^7.8.3",
+    "@babel/core": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "@babel/preset-react": "^7.8.3",
     "eslint": "^6.8.0",
     "prettier": "^1.19.1"
   }
