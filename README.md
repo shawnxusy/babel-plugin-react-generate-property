@@ -45,7 +45,7 @@ $ yarn add --dev babel-plugin-react-generate-property
 ...or with npm:
 
 ```sh
-$ npm install babel-plugin-react-generate-property
+$ npm install --save-dev babel-plugin-react-generate-property
 ```
 
 ## Usage (via .babelrc)
