@@ -46,7 +46,7 @@ module.exports = function({ types: t }) {
               }
             });
 
-            if (!dataIDDefined) {
+            if (!dataIDDefined && nodeName && nodeName !== 'Fragment') {
               jsxPath.node.openingElement.attributes.push(
                 t.jSXAttribute(
                   t.jSXIdentifier(customProperty),

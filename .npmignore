@@ -1,5 +1,3 @@
-.babelrc
-.circleci
 .eslintrc
 .github
 *.DS_Store
