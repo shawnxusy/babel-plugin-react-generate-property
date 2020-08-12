@@ -55,7 +55,7 @@ $ npm install --save-dev babel-plugin-react-generate-property
 {
   "env": {
     "development": {
-      "plugins": ["react-generate-data-id"]
+      "plugins": ["babel-plugin-react-generate-property"]
     }
   }
 }
@@ -67,7 +67,7 @@ $ npm install --save-dev babel-plugin-react-generate-property
 {
   "env": {
     "development": {
-      "plugins": [["react-generate-data-id", { "customProperty": "data-dev", "dirLevel": 2, "slashChar": "\" }]]
+      "plugins": [["babel-plugin-react-generate-property", { "customProperty": "data-dev", "dirLevel": 2, "slashChar": "\" }]]
     }
   }
 }
@@ -82,7 +82,7 @@ $ npm install --save-dev babel-plugin-react-generate-property
 ## Via CLI
 
 ```sh
-babel --plugins react-generate-data-id script.js
+babel --plugins babel-plugin-react-generate-property script.js
 ```
 
 ## Via Node API
@@ -91,7 +91,7 @@ without options:
 
 ```js
 require('babel-core').transform('code', {
-  plugins: ['react-generate-data-id'],
+  plugins: ['babel-plugin-react-generate-property'],
 });
 ```
 
@@ -99,7 +99,7 @@ with options:
 
 ```js
 require('babel-core').transform('code', {
-  plugins: [['react-generate-data-id', { customProperty: 'data-test' }]],
+  plugins: [['babel-plugin-react-generate-property', { customProperty: 'data-test' }]],
 });
 ```
 
