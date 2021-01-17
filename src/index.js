@@ -5,7 +5,7 @@ module.exports = declare(api => {
   api.assertVersion(7)
 
   return {
-   name: 'react-generate-data-id',
+  //  name: 'react-generate-data-id',
     visitor: {
       Program(programPath, state) {
         // Get user configs
