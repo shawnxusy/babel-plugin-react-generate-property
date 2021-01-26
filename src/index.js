@@ -1,11 +1,12 @@
 const { declare } = require('@babel/helper-plugin-utils')
 const { types: t } = require('@babel/core')
+const  nodeNameIndexes = {}
 
 module.exports = declare(api => {
   api.assertVersion(7)
+ 
 
   return {
-  //  name: 'react-generate-data-id',
     visitor: {
       Program(programPath, state) {
         // Get user configs
@@ -28,13 +29,11 @@ module.exports = declare(api => {
 
         const fileName = splits[splits.length - 1].split('.')[0]
         const fileIdentifier = `${dirNames.join('_')}_${fileName}`
-        let previousNodeName = ''
-        let index = 0
 
         programPath.traverse({
           JSXElement(jsxPath) {
-            let nodeName = '',
-              dataIDDefined = false
+            let nodeName = '';
+            let dataIDDefined = false
 
             // Traverse once to get the element node name (div, Header, span, etc)
             jsxPath.traverse({
@@ -56,25 +55,22 @@ module.exports = declare(api => {
             })
 
             if (!dataIDDefined && nodeName && nodeName !== 'Fragment') {
+              const keys = Object.keys(nodeNameIndexes)
+
+              if(!keys.includes(nodeName)) {
+                nodeNameIndexes[nodeName] = 0
+              } else {
+                nodeNameIndexes[nodeName] += 1
+              }
+
               jsxPath.node.openingElement.attributes.push(
                 t.jSXAttribute(
                   t.jSXIdentifier(customProperty),
                   t.stringLiteral(
-                    `${nameGenerator(fileIdentifier, nodeName)}${
-                      nameGenerator(fileIdentifier, previousNodeName) ===
-                      nameGenerator(fileIdentifier, nodeName)
-                        ? `_${index}`
-                        : ''
-                    }`
-                  )
+                    `${nameGenerator(fileIdentifier, nodeName)}${`_${nodeNameIndexes[nodeName]}`
+                    }`)
                 )
               )
-              previousNodeName = nodeName
-              if (previousNodeName === nodeName) {
-                index++
-              } else {
-                index = 0
-              }
             }
           }
         })
