@@ -1,17 +1,16 @@
 const { declare } = require('@babel/helper-plugin-utils')
 const { types: t } = require('@babel/core')
-const  nodeNameIndexes = {}
 
 module.exports = declare(api => {
   api.assertVersion(7)
- 
 
   return {
+  //  name: 'react-generate-data-id',
     visitor: {
       Program(programPath, state) {
         // Get user configs
         const {
-          customProperty = 'data-id',
+          customProperty = 'cy-test-id',
           slashChar = '/',
           dirLevel = 1
         } = state.opts
@@ -32,7 +31,7 @@ module.exports = declare(api => {
 
         programPath.traverse({
           JSXElement(jsxPath) {
-            let nodeName = '';
+            let nodeName = ''
             let dataIDDefined = false
 
             // Traverse once to get the element node name (div, Header, span, etc)
@@ -55,20 +54,12 @@ module.exports = declare(api => {
             })
 
             if (!dataIDDefined && nodeName && nodeName !== 'Fragment') {
-              const keys = Object.keys(nodeNameIndexes)
-
-              if(!keys.includes(nodeName)) {
-                nodeNameIndexes[nodeName] = 0
-              } else {
-                nodeNameIndexes[nodeName] += 1
-              }
-
               jsxPath.node.openingElement.attributes.push(
                 t.jSXAttribute(
                   t.jSXIdentifier(customProperty),
                   t.stringLiteral(
-                    `${nameGenerator(fileIdentifier, nodeName)}${`_${nodeNameIndexes[nodeName]}`
-                    }`)
+                    `${nameGenerator(fileIdentifier, nodeName)}`
+                  )
                 )
               )
             }
