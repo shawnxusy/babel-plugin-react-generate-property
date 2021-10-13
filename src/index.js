@@ -5,7 +5,7 @@ module.exports = declare(api => {
   api.assertVersion(7)
 
   return {
-  //  name: 'react-generate-data-id',
+    //  name: 'react-generate-data-id',
     visitor: {
       Program(programPath, state) {
         // Get user configs
@@ -35,13 +35,17 @@ module.exports = declare(api => {
         programPath.traverse({
           JSXElement(jsxPath) {
             let nodeName = '',
-                className = '',
-                dataIDDefined = false
+              className = '',
+              dataIDDefined = false
 
             if (addClassNames) {
-              let classes =  jsxPath.node.openingElement.attributes.filter(x => x?.name?.name == 'className')
-              let classNode = classes.length > 0 ? classes[0] : null
-              className = classNode?.value ? (classNode.value.expression.property.name) : ''
+              const classNodes = jsxPath.node.openingElement.attributes.filter(
+                x => x?.name?.name == 'className'
+              )
+              const classNames = classNodes
+                .map(x => x?.value?.expression?.property?.name)
+                .filter(Boolean)
+              className = classNames.length > 0 ? classNames.join('_') : ''
             }
 
             // Traverse once to get the element node name (div, Header, span, etc)
@@ -73,7 +77,11 @@ module.exports = declare(api => {
                       nameGenerator(fileIdentifier, nodeName)
                         ? `_${index}`
                         : ''
-                    }${addClassNames && className.length > 0 ? `_${className}` : ''}`
+                    }${
+                      addClassNames && className.length > 0
+                        ? `_${className}`
+                        : ''
+                    }`
                   )
                 )
               )
