@@ -12,7 +12,8 @@ module.exports = declare(api => {
         const {
           customProperty = 'data-id',
           slashChar = '/',
-          dirLevel = 1
+          dirLevel = 1,
+          addClassNames = false
         } = state.opts
         const filename = state.file.opts.filename
 
@@ -34,7 +35,14 @@ module.exports = declare(api => {
         programPath.traverse({
           JSXElement(jsxPath) {
             let nodeName = '',
-              dataIDDefined = false
+                className = '',
+                dataIDDefined = false
+
+            if (addClassNames) {
+              let classes =  jsxPath.node.openingElement.attributes.filter(x => x?.name?.name == 'className')
+              let classNode = classes.length > 0 ? classes[0] : null
+              className = classNode?.value ? (classNode.value.expression.property.name) : ''
+            }
 
             // Traverse once to get the element node name (div, Header, span, etc)
             jsxPath.traverse({
@@ -65,7 +73,7 @@ module.exports = declare(api => {
                       nameGenerator(fileIdentifier, nodeName)
                         ? `_${index}`
                         : ''
-                    }`
+                    }${addClassNames && className.length > 0 ? `_${className}` : ''}`
                   )
                 )
               )

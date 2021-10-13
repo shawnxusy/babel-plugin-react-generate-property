@@ -67,7 +67,16 @@ $ npm install --save-dev babel-plugin-react-generate-property
 {
   "env": {
     "development": {
-      "plugins": [["babel-plugin-react-generate-property", { "customProperty": "data-dev", "dirLevel": 2, "slashChar": "\" }]]
+      "plugins": [
+        [
+          "babel-plugin-react-generate-property", {
+            "customProperty": "data-dev",
+            "dirLevel": 2,
+            "slashChar": "\",
+            "addClassNames": true
+          }
+        ]
+      ]
     }
   }
 }
@@ -77,6 +86,26 @@ $ npm install --save-dev babel-plugin-react-generate-property
 **dirLevel** How many levels of the file directory do you want to use for the property value. If you use more, the generated value is more likely to be unique, but you will also incur slightly larger builds. Default to 1 (append only the directory where the target file is located in)
 
 **slashChar** Default to "/", if you are on Windows, use "\".
+
+**addClassNames** In case you use css-modules and want to add className to data-attribute:
+
+#### Before
+```jsx
+// src/client/Components/Common/Header.jsx
+<View>
+  <div className={s.wrapper}>...</div>
+</View>
+```
+
+#### Generated
+```jsx
+// src/client/Components/Common/Header.jsx
+// using option (addClassNames: true)
+<View data-test="Common_Header_View">
+  <div className={s.wrapper} data-test="Common_Header_div_wrapper">...</div>
+</View>
+```
+
 
 
 ## Via CLI
