@@ -14,7 +14,8 @@ module.exports = declare(api => {
           slashChar = '/',
           dirLevel = 1,
           addModuleClassNames = false,
-          prefix = ''
+          prefix = '',
+          ignoreTreeDepth = false
         } = state.opts
 
         const filename = state.file.opts.filename || '' // filename missing in test env
@@ -105,7 +106,10 @@ function nameGenerator(params, options) {
 
   const nodeName = params.nodeName || false
 
-  const index = params.nodeName == params.previousNodeName ? params.index : null
+  const index =
+    params.nodeName == params.previousNodeName && !options.ignoreTreeDepth
+      ? params.index
+      : null
 
   const className =
     options.addModuleClassNames && params.className.length > 0
