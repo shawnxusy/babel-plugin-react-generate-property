@@ -13,10 +13,9 @@ module.exports = declare(api => {
           customProperty = 'data-id',
           slashChar = '/',
           dirLevel = 1,
-          addClassNames = false
+          addClassNames = false,
+          prefix = ''
         } = state.opts
-
-        console.log(state)
 
         const filename = state.file.opts.filename || '' // filename missing in test env
 
@@ -71,21 +70,18 @@ module.exports = declare(api => {
             })
 
             if (!dataIDDefined && nodeName && nodeName !== 'Fragment') {
+              const params = {
+                path: fileIdentifier,
+                nodeName,
+                previousNodeName,
+                index,
+                className
+              }
+
               jsxPath.node.openingElement.attributes.push(
                 t.jSXAttribute(
                   t.jSXIdentifier(customProperty),
-                  t.stringLiteral(
-                    `${nameGenerator(fileIdentifier, nodeName)}${
-                      nameGenerator(fileIdentifier, previousNodeName) ===
-                      nameGenerator(fileIdentifier, nodeName)
-                        ? `_${index}`
-                        : ''
-                    }${
-                      addClassNames && className.length > 0
-                        ? `_${className}`
-                        : ''
-                    }`
-                  )
+                  t.stringLiteral(nameGenerator(params, state.opts))
                 )
               )
               previousNodeName = nodeName
@@ -102,6 +98,21 @@ module.exports = declare(api => {
   }
 })
 
-function nameGenerator(path, name) {
-  return `${path}_${name}`
+function nameGenerator(params, options) {
+  const prefix = options.prefix || false
+
+  const path = params.path || false
+
+  const nodeName = params.nodeName || false
+
+  const index = params.nodeName == params.previousNodeName ? params.index : null
+
+  const className =
+    options.addClassNames && params.className.length > 0
+      ? params.className
+      : null
+
+  const out = [prefix, path, nodeName, index, className].filter(Boolean)
+
+  return out.join('_')
 }
