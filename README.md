@@ -73,7 +73,8 @@ $ npm install --save-dev babel-plugin-react-generate-property
             "customProperty": "data-dev",
             "dirLevel": 2,
             "slashChar": "\",
-            "addClassNames": true
+            "addClassNames": true,
+            "prefix": "myPrefix"
           }
         ]
       ]
@@ -99,14 +100,13 @@ $ npm install --save-dev babel-plugin-react-generate-property
 
 #### Generated
 ```jsx
-// src/client/Components/Common/Header.jsx
 // using option (addClassNames: true)
 <View data-test="Common_Header_View">
   <div className={s.wrapper} data-test="Common_Header_div_wrapper">...</div>
 </View>
 ```
 
-
+**prefix** Add custom prefix to data-attr
 
 ## Via CLI
 
