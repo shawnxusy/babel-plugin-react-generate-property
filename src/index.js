@@ -15,7 +15,10 @@ module.exports = declare(api => {
           dirLevel = 1,
           addClassNames = false
         } = state.opts
-        const filename = state.file.opts.filename
+
+        console.log(state)
+
+        const filename = state.file.opts.filename || '' // filename missing in test env
 
         const splits = filename.split(slashChar)
         if (!splits || !splits.length) {
