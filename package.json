@@ -10,8 +10,8 @@
     "build": "babel src -d lib",
     "build:watch": "babel src -w -d lib",
     "prepublishOnly": "npm run build",
-    "test": "mocha",
-    "tests": "mocha -w"
+    "test": "mocha --exclude example",
+    "tests": "mocha -w --exclude ['example']"
   },
   "repository": {
     "type": "git",
