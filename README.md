@@ -73,7 +73,7 @@ $ npm install --save-dev babel-plugin-react-generate-property
             "customProperty": "data-dev",
             "dirLevel": 2,
             "slashChar": "\",
-            "addClassNames": true,
+            "addModuleClassNames": true,
             "prefix": "myPrefix"
           }
         ]
@@ -88,7 +88,7 @@ $ npm install --save-dev babel-plugin-react-generate-property
 
 **slashChar** Default to "/", if you are on Windows, use "\".
 
-**addClassNames** In case you use css-modules and want to add className to data-attribute:
+**addModuleClassNames** In case you use css-modules and want to add className to data-attribute:
 
 #### Before
 ```jsx
@@ -100,7 +100,7 @@ $ npm install --save-dev babel-plugin-react-generate-property
 
 #### Generated
 ```jsx
-// using option (addClassNames: true)
+// using option (addModuleClassNames: true)
 <View data-test="Common_Header_View">
   <div className={s.wrapper} data-test="Common_Header_div_wrapper">...</div>
 </View>

@@ -13,7 +13,7 @@ module.exports = declare(api => {
           customProperty = 'data-id',
           slashChar = '/',
           dirLevel = 1,
-          addClassNames = false,
+          addModuleClassNames = false,
           prefix = ''
         } = state.opts
 
@@ -40,7 +40,7 @@ module.exports = declare(api => {
               className = '',
               dataIDDefined = false
 
-            if (addClassNames) {
+            if (addModuleClassNames) {
               const classNodes = jsxPath.node.openingElement.attributes.filter(
                 x => x?.name?.name == 'className'
               )
@@ -108,7 +108,7 @@ function nameGenerator(params, options) {
   const index = params.nodeName == params.previousNodeName ? params.index : null
 
   const className =
-    options.addClassNames && params.className.length > 0
+    options.addModuleClassNames && params.className.length > 0
       ? params.className
       : null
 
