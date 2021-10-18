@@ -74,7 +74,8 @@ $ npm install --save-dev babel-plugin-react-generate-property
             "dirLevel": 2,
             "slashChar": "\",
             "addModuleClassNames": true,
-            "prefix": "myPrefix"
+            "prefix": "myPrefix",
+            "firstChildOnly": false
           }
         ]
       ]
@@ -107,6 +108,8 @@ $ npm install --save-dev babel-plugin-react-generate-property
 ```
 
 **prefix** Add custom prefix to data-attr
+
+**firstChildOnly** Adds test attrs only on the root DOM node of every component
 
 ## Via CLI
 

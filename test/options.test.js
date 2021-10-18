@@ -4,11 +4,13 @@ const plugin = require('../src/index.js')
 
 const React = require('react') // used in eval
 
-const ex1 = `let App = (p) => <div>{props.children}</div>; <App><div className='testclass'></div></App>`
+const ex1 = `let App = (props) => <div>{props.children}</div>; <App><div className='testclass'></div></App>`
 
 const ex2 = `let s = {}; <div className={s.testClassName}></div>`
 
 const ex3 = `<div><div /></div>`
+
+const ex4 = `let App = (props) => <div>{props.children}</div>; <App><div><span/></div></App>`
 
 const ex1b = babel.transformSync(ex1, {
   filename: 'fname.js',
@@ -25,6 +27,11 @@ const ex2b = babel.transformSync(ex2, {
 const ex3b = babel.transformSync(ex3, {
   presets: ['@babel/preset-react'],
   plugins: [[plugin, { ignoreTreeDepth: true }]]
+})
+
+const ex4b = babel.transformSync(ex4, {
+  presets: ['@babel/preset-react'],
+  plugins: [[plugin, { firstChildOnly: true }]]
 })
 
 describe('Options functionality', () => {
@@ -46,6 +53,26 @@ describe('Options functionality', () => {
     it('should ignore inner index', function() {
       const output = eval(ex3b.code)
       assert.equal(output.props.children.props['data-id'], '__div')
+    })
+  })
+
+  describe('firstChildOnly option', function() {
+    it('should not add data-id on component', function() {
+      const output = eval(ex4b.code)
+      assert.equal(output.props['data-id'], undefined)
+    })
+
+    it('should add data-id on first node in container', function() {
+      const output = eval(ex4b.code)
+      assert.equal(output.props.children.props['data-id'], '__div')
+    })
+
+    it('should not add data-id on inner nodes', function() {
+      const output = eval(ex4b.code)
+      assert.equal(
+        output.props.children.props.children.props['data-id'],
+        undefined
+      )
     })
   })
 })

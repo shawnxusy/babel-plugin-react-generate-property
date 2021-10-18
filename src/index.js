@@ -15,10 +15,11 @@ module.exports = declare(api => {
           dirLevel = 1,
           addModuleClassNames = false,
           prefix = '',
-          ignoreTreeDepth = false
+          ignoreTreeDepth = false,
+          firstChildOnly = false
         } = state.opts
 
-        const filename = state.file.opts.filename || '' // filename missing in test env
+        const filename = state.file.opts.filename || '' // filename missing in test env, see tests
 
         const splits = filename.split(slashChar)
         if (!splits || !splits.length) {
@@ -70,6 +71,13 @@ module.exports = declare(api => {
               }
             })
 
+            // Detect if parent is React component or DOM node
+            // Option adds attrs to first DOM node in the component
+            // and ignores inner nodes
+            const firstChild = firstChildOnly
+              ? startsFromUpperCase(previousNodeName)
+              : true
+
             if (!dataIDDefined && nodeName && nodeName !== 'Fragment') {
               const params = {
                 path: fileIdentifier,
@@ -79,12 +87,13 @@ module.exports = declare(api => {
                 className
               }
 
-              jsxPath.node.openingElement.attributes.push(
-                t.jSXAttribute(
-                  t.jSXIdentifier(customProperty),
-                  t.stringLiteral(nameGenerator(params, state.opts))
+              firstChild &&
+                jsxPath.node.openingElement.attributes.push(
+                  t.jSXAttribute(
+                    t.jSXIdentifier(customProperty),
+                    t.stringLiteral(nameGenerator(params, state.opts))
+                  )
                 )
-              )
               previousNodeName = nodeName
               if (previousNodeName === nodeName) {
                 index++
@@ -101,9 +110,7 @@ module.exports = declare(api => {
 
 function nameGenerator(params, options) {
   const prefix = options.prefix || false
-
   const path = params.path || false
-
   const nodeName = params.nodeName || false
 
   const index =
@@ -119,4 +126,11 @@ function nameGenerator(params, options) {
   const out = [prefix, path, nodeName, index, className].filter(Boolean)
 
   return out.join('_')
+}
+
+function startsFromUpperCase(s) {
+  if (s.length == 0) {
+    return false
+  }
+  return s[0].toUpperCase() == s[0]
 }
