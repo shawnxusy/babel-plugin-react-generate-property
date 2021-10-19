@@ -52,6 +52,12 @@ const ex7b = babel.transformSync(ex1, {
   plugins: [[plugin, { match: /babel/ }]] // considering git clone 'bablel-plugin-...'
 })
 
+const ex8b = babel.transformSync(ex1, {
+  filename: 'fname.js',
+  presets: ['@babel/preset-react'],
+  plugins: [[plugin, { ignoreNodeNames: true, dirLevel: 0 }]]
+})
+
 describe('Options functionality', () => {
   describe('Prefix', function() {
     it('should be passed', function() {
@@ -110,6 +116,13 @@ describe('Options functionality', () => {
     it('should not add data-id on non-matching component', function() {
       const output = eval(ex6b.code)
       assert.equal(output.props['data-id'], undefined)
+    })
+  })
+
+  describe('ignoreNodeNames option', function() {
+    it('should ignore node name', function() {
+      const output = eval(ex8b.code)
+      assert.equal(output.props.children.props['data-id'], '_fname')
     })
   })
 })

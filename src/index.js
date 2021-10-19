@@ -16,6 +16,7 @@ module.exports = declare(api => {
           addModuleClassNames = false,
           prefix = '',
           ignoreTreeDepth = false,
+          ignoreNodeNames = false,
           firstChildOnly = false,
           match = null
         } = state.opts
@@ -119,7 +120,7 @@ module.exports = declare(api => {
 function nameGenerator(params, options) {
   const prefix = options.prefix || null
   const path = params.path || null
-  const nodeName = params.nodeName || null
+  const nodeName = options.ignoreNodeNames ? null : params.nodeName || null
 
   const index =
     params.nodeName == params.previousNodeName && !options.ignoreTreeDepth

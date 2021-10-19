@@ -83,13 +83,13 @@ $ npm install --save-dev babel-plugin-react-generate-property
   }
 }
 ```
-**customProperty** Use this to configure which property to add to open tags. By default it would be "data-id".
+**customProperty**: Use this to configure which property to add to open tags. By default it would be "data-id".
 
-**dirLevel** How many levels of the file directory do you want to use for the property value. If you use more, the generated value is more likely to be unique, but you will also incur slightly larger builds. Default to 1 (append only the directory where the target file is located in)
+**dirLevel**: How many levels of the file directory do you want to use for the property value. If you use more, the generated value is more likely to be unique, but you will also incur slightly larger builds. Default to 1 (append only the directory where the target file is located in)
 
-**slashChar** Default to "/", if you are on Windows, use "\".
+**slashChar**: Default to "/", if you are on Windows, use "\".
 
-**addModuleClassNames** In case you use css-modules and want to add className to data-attribute:
+**addModuleClassNames**  (default: `false`) : In case you use css-modules and want to add className to data-attribute:
 
 #### Before
 ```jsx
@@ -107,9 +107,15 @@ $ npm install --save-dev babel-plugin-react-generate-property
 </View>
 ```
 
-**prefix** Add custom prefix to data-attr
+This does not work for basic string classNames
 
-**firstChildOnly** Adds test attrs only on the root DOM node of every component
+**prefix**: Add custom prefix to data-attr
+
+**firstChildOnly**: Adds test attrs only on the root DOM node of every component  (default: `false`) 
+
+**ignoreNodeNames**: do not add nodeName to data-attr (default: `false`) 
+
+**match**: Accepts RegExp matching filepath and filename. Attrs will be added to matched components only. Only suitable for js-forms of babel config
 
 ## Via CLI
 
@@ -122,16 +128,21 @@ babel --plugins babel-plugin-react-generate-property script.js
 without options:
 
 ```js
-require('babel-core').transform('code', {
-  plugins: ['babel-plugin-react-generate-property'],
+require('@babel/core').transformSync('code', {
+  plugins: [require('babel-plugin-react-generate-property')],
 });
 ```
 
 with options:
 
 ```js
-require('babel-core').transform('code', {
-  plugins: [['babel-plugin-react-generate-property', { customProperty: 'data-test' }]],
+require('babel-core').transformSync('code', {
+  plugins: [
+    [
+      require('babel-plugin-react-generate-property'),
+      { customProperty: 'data-test' }
+    ]
+  ],
 });
 ```
 
