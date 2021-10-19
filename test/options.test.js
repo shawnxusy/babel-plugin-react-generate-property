@@ -46,6 +46,12 @@ const ex6b = babel.transformSync(ex1, {
   plugins: [[plugin, { match: /notfound/ }]]
 })
 
+const ex7b = babel.transformSync(ex1, {
+  filename: 'fname.js',
+  presets: ['@babel/preset-react'],
+  plugins: [[plugin, { match: /babel/ }]] // considering git clone 'bablel-plugin-...'
+})
+
 describe('Options functionality', () => {
   describe('Prefix', function() {
     it('should be passed', function() {
@@ -89,8 +95,14 @@ describe('Options functionality', () => {
   })
 
   describe('match option', function() {
-    it('should add data-id on matching component', function() {
+    it('should add data-id on matching component (filename)', function() {
       const output = eval(ex5b.code)
+      assert.notEqual(output.props['data-id'], undefined)
+      assert.notEqual(output.props.children.props['data-id'], undefined)
+    })
+
+    it('should add data-id on matching component (dirname)', function() {
+      const output = eval(ex7b.code)
       assert.notEqual(output.props['data-id'], undefined)
       assert.notEqual(output.props.children.props['data-id'], undefined)
     })

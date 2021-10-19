@@ -83,7 +83,7 @@ module.exports = declare(api => {
 
             // option to append data-attrs only to certain components
             // matches filename/filepath by RegExp
-            const filter = match ? match.test(fileIdentifier) : true
+            const filter = match ? match.test(filename) : true
 
             if (!dataIDDefined && nodeName && nodeName !== 'Fragment') {
               const params = {
