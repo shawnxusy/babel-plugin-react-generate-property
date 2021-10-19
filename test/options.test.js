@@ -34,6 +34,18 @@ const ex4b = babel.transformSync(ex4, {
   plugins: [[plugin, { firstChildOnly: true }]]
 })
 
+const ex5b = babel.transformSync(ex1, {
+  filename: 'fname.js',
+  presets: ['@babel/preset-react'],
+  plugins: [[plugin, { match: /fname/ }]]
+})
+
+const ex6b = babel.transformSync(ex1, {
+  filename: 'fname.js',
+  presets: ['@babel/preset-react'],
+  plugins: [[plugin, { match: /notfound/ }]]
+})
+
 describe('Options functionality', () => {
   describe('Prefix', function() {
     it('should be passed', function() {
@@ -73,6 +85,19 @@ describe('Options functionality', () => {
         output.props.children.props.children.props['data-id'],
         undefined
       )
+    })
+  })
+
+  describe('match option', function() {
+    it('should add data-id on matching component', function() {
+      const output = eval(ex5b.code)
+      assert.notEqual(output.props['data-id'], undefined)
+      assert.notEqual(output.props.children.props['data-id'], undefined)
+    })
+
+    it('should not add data-id on non-matching component', function() {
+      const output = eval(ex6b.code)
+      assert.equal(output.props['data-id'], undefined)
     })
   })
 })

@@ -16,7 +16,8 @@ module.exports = declare(api => {
           addModuleClassNames = false,
           prefix = '',
           ignoreTreeDepth = false,
-          firstChildOnly = false
+          firstChildOnly = false,
+          match = null
         } = state.opts
 
         const filename = state.file.opts.filename || '' // filename missing in test env, see tests
@@ -42,6 +43,8 @@ module.exports = declare(api => {
               className = '',
               dataIDDefined = false
 
+            // we traverse to find css module classes names, works like:
+            // `<div className={s.foo}>` -> `foo`
             if (addModuleClassNames) {
               const classNodes = jsxPath.node.openingElement.attributes.filter(
                 x => x?.name?.name == 'className'
@@ -78,6 +81,10 @@ module.exports = declare(api => {
               ? startsFromUpperCase(previousNodeName)
               : true
 
+            // option to append data-attrs only to certain components
+            // matches filename/filepath by RegExp
+            const filter = match ? match.test(fileIdentifier) : true
+
             if (!dataIDDefined && nodeName && nodeName !== 'Fragment') {
               const params = {
                 path: fileIdentifier,
@@ -88,6 +95,7 @@ module.exports = declare(api => {
               }
 
               firstChild &&
+                filter &&
                 jsxPath.node.openingElement.attributes.push(
                   t.jSXAttribute(
                     t.jSXIdentifier(customProperty),
@@ -109,9 +117,9 @@ module.exports = declare(api => {
 })
 
 function nameGenerator(params, options) {
-  const prefix = options.prefix || false
-  const path = params.path || false
-  const nodeName = params.nodeName || false
+  const prefix = options.prefix || null
+  const path = params.path || null
+  const nodeName = params.nodeName || null
 
   const index =
     params.nodeName == params.previousNodeName && !options.ignoreTreeDepth
@@ -123,9 +131,7 @@ function nameGenerator(params, options) {
       ? params.className
       : null
 
-  const out = [prefix, path, nodeName, index, className].filter(Boolean)
-
-  return out.join('_')
+  return [prefix, path, nodeName, index, className].filter(Boolean).join('_')
 }
 
 function startsFromUpperCase(s) {
