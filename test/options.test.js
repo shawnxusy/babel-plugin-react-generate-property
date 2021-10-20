@@ -63,6 +63,12 @@ const ex8b = babel.transformSync(ex1, {
   plugins: [[plugin, { ignoreNodeNames: true, dirLevel: 0 }]]
 })
 
+const ex9b = babel.transformSync(ex1, {
+  filename: 'fname.js',
+  presets: ['@babel/preset-react'],
+  plugins: [[plugin, { omitFileName: true, dirLevel: 0 }]]
+})
+
 describe('Options functionality', () => {
   describe('Prefix', function() {
     it('should be passed', function() {
@@ -138,6 +144,13 @@ describe('Options functionality', () => {
     it('should ignore node name', function() {
       const output = eval(ex8b.code)
       assert.equal(output.props.children.props['data-id'], '_fname')
+    })
+  })
+
+  describe('omitFileName option', function() {
+    it('should ignore node name', function() {
+      const output = eval(ex9b.code)
+      assert.equal(output.props.children.props['data-id'], 'div')
     })
   })
 })

@@ -18,6 +18,7 @@ module.exports = declare(api => {
           ignoreTreeDepth = false,
           ignoreNodeNames = false,
           firstChildOnly = false,
+          omitFileName = false,
           match = null
         } = state.opts
 
@@ -34,7 +35,9 @@ module.exports = declare(api => {
         const dirNames = splits.slice(-1 - dirLevel, -1)
 
         const fileName = splits[splits.length - 1].split('.')[0]
-        const fileIdentifier = `${dirNames.join('_')}_${fileName}`
+        const fileIdentifier = `${dirNames.join('_')}${
+          omitFileName ? '' : `_${fileName}`
+        }`
         let previousNodeName = ''
         let index = 0
 

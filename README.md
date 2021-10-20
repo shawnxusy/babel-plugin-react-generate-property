@@ -87,6 +87,8 @@ $ npm install --save-dev babel-plugin-react-generate-property
 
 **dirLevel**: How many levels of the file directory do you want to use for the property value. If you use more, the generated value is more likely to be unique, but you will also incur slightly larger builds. Default to 1 (append only the directory where the target file is located in)
 
+**omitFileName**  (default: `false`): In case you want to omit filename in data-attr
+
 **slashChar**: Default to "/", if you are on Windows, use "\".
 
 **addModuleClassNames**  (default: `false`) : In case you use css-modules and want to add className to data-attribute:
@@ -115,7 +117,7 @@ This does not work for basic string classNames
 
 **ignoreNodeNames**: do not add nodeName to data-attr (default: `false`) 
 
-**match**: Accepts RegExp matching filepath and filename. Attrs will be added to matched components only. Only suitable for js-forms of babel config
+**match**: Accepts RegExp matching filepath and filename. Attrs will be added to matched components only. Matched regex string will be added as prefix. Only suitable for js-forms of babel config.
 
 ## Via CLI
 
