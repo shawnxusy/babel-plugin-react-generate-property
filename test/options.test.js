@@ -34,6 +34,11 @@ const ex4b = babel.transformSync(ex4, {
   plugins: [[plugin, { firstChildOnly: true }]]
 })
 
+const ex4b2 = babel.transformSync(ex3, {
+  presets: ['@babel/preset-react'],
+  plugins: [[plugin, { firstChildOnly: true }]]
+})
+
 const ex5b = babel.transformSync(ex1, {
   filename: 'fname.js',
   presets: ['@babel/preset-react'],
@@ -86,9 +91,14 @@ describe('Options functionality', () => {
       assert.equal(output.props['data-id'], undefined)
     })
 
-    it('should add data-id on first node in container', function() {
+    it('should add data-id on first child in container', function() {
       const output = eval(ex4b.code)
       assert.equal(output.props.children.props['data-id'], '__div')
+    })
+
+    it('should add data-id on first node in container', function() {
+      const output = eval(ex4b2.code)
+      assert.equal(output.props['data-id'], '__div')
     })
 
     it('should not add data-id on inner nodes', function() {

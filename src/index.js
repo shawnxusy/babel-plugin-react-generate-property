@@ -79,7 +79,7 @@ module.exports = declare(api => {
             // Option adds attrs to first DOM node in the component
             // and ignores inner nodes
             const firstChild = firstChildOnly
-              ? startsFromUpperCase(previousNodeName)
+              ? !previousNodeName || startsFromUpperCase(previousNodeName)
               : true
 
             // option to append data-attrs only to certain components
