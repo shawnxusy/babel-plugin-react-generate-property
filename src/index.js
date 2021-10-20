@@ -92,7 +92,11 @@ module.exports = declare(api => {
                 nodeName,
                 previousNodeName,
                 index,
-                className
+                className,
+                regex:
+                  match && filename.match(match) != null
+                    ? filename.match(match)[0]
+                    : null
               }
 
               firstChild &&
@@ -119,6 +123,8 @@ module.exports = declare(api => {
 
 function nameGenerator(params, options) {
   const prefix = options.prefix || null
+  const regexPrefix = params.regex || null
+
   const path = params.path || null
   const nodeName = options.ignoreNodeNames ? null : params.nodeName || null
 
@@ -132,7 +138,9 @@ function nameGenerator(params, options) {
       ? params.className
       : null
 
-  return [prefix, path, nodeName, index, className].filter(Boolean).join('_')
+  return [prefix, regexPrefix, path, nodeName, index, className]
+    .filter(Boolean)
+    .join('_')
 }
 
 function startsFromUpperCase(s) {

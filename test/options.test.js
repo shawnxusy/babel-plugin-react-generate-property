@@ -42,7 +42,7 @@ const ex4b2 = babel.transformSync(ex3, {
 const ex5b = babel.transformSync(ex1, {
   filename: 'fname.js',
   presets: ['@babel/preset-react'],
-  plugins: [[plugin, { match: /fname/ }]]
+  plugins: [[plugin, { match: /fnam/ }]]
 })
 
 const ex6b = babel.transformSync(ex1, {
@@ -121,6 +121,11 @@ describe('Options functionality', () => {
       const output = eval(ex7b.code)
       assert.notEqual(output.props['data-id'], undefined)
       assert.notEqual(output.props.children.props['data-id'], undefined)
+    })
+
+    it('should add correct regex prefix', function() {
+      const output = eval(ex5b.code)
+      assert.equal(output.props['data-id'].startsWith('fnam_'), true)
     })
 
     it('should not add data-id on non-matching component', function() {
