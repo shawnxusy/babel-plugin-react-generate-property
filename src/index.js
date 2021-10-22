@@ -81,13 +81,15 @@ module.exports = declare(api => {
             // Detect if parent is React component or DOM node
             // Option adds attrs to first DOM node in the component
             // and ignores inner nodes
-            const firstChild = firstChildOnly
+            const matchFirstChildRule = firstChildOnly
               ? !previousNodeName || startsFromUpperCase(previousNodeName)
               : true
 
             // option to append data-attrs only to certain components
             // matches filename/filepath by RegExp
-            const filter = match ? match.test(filename) : true
+            const matchRegex = match ? match.test(filename) : true
+
+            const filteringOptionsCheck = matchFirstChildRule && matchRegex
 
             if (!dataIDDefined && nodeName && nodeName !== 'Fragment') {
               const params = {
@@ -102,14 +104,14 @@ module.exports = declare(api => {
                     : null
               }
 
-              firstChild &&
-                filter &&
+              filteringOptionsCheck &&
                 jsxPath.node.openingElement.attributes.push(
                   t.jSXAttribute(
                     t.jSXIdentifier(customProperty),
                     t.stringLiteral(nameGenerator(params, state.opts))
                   )
                 )
+
               previousNodeName = nodeName
               if (previousNodeName === nodeName) {
                 index++
