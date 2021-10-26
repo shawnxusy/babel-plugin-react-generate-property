@@ -47,6 +47,8 @@ module.exports = declare(api => {
               className = '',
               dataIDDefined = false
 
+            const parentNodeName = jsxPath.parent.openingElement?.name?.name
+
             // we traverse to find css module classes names, works like:
             // `<div className={s.foo}>` -> `foo`
             if (addModuleClassNames) {
@@ -81,9 +83,11 @@ module.exports = declare(api => {
             // Detect if parent is React component or DOM node
             // Option adds attrs to first DOM node in the component
             // and ignores inner nodes
-            const matchFirstChildRule = firstChildOnly
-              ? !previousNodeName || startsFromUpperCase(previousNodeName)
-              : true
+            const matchFirstChildRule = firstChildOnly // only use filter if option passed
+              ? !previousNodeName || // case of top node in a component: `let A = () => <main ><div /></main>` -> main matches
+                (startsFromUpperCase(previousNodeName) && // case of first child: `<A><main /><div /></A>` -> main matches
+                  previousNodeName == parentNodeName) // but not if previous node is not parent: `<A><main /><B /><div /></A>` -> div not matches
+              : true // do not filter anything in case option is missing
 
             // option to append data-attrs only to certain components
             // matches filename/filepath by RegExp

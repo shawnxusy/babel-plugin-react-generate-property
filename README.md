@@ -113,11 +113,65 @@ This does not work for basic string classNames
 
 **prefix**: Add custom prefix to data-attr
 
-**firstChildOnly**: Adds test attrs only on the root DOM node of every component  (default: `false`) 
-
 **ignoreNodeNames**: do not add nodeName to data-attr (default: `false`) 
 
 **match**: Accepts RegExp matching filepath and filename. Attrs will be added to matched components only. Matched regex string will be added as prefix. Only suitable for js-forms of babel config.
+
+**firstChildOnly**: Adds test attrs only on the root DOM node of every component  (default: `false`) 
+
+
+<details>
+<summary>firstChildOnly feature details</summary>
+
+In general it should work as follows:
+
+```jsx
+const A = (props) => <main>{props.children}</main>
+const B = (props) => <figure /><div>{props.children}<span/></div>
+
+<A><B>Hello</B></A>
+```
+
+will be transformed into
+
+```html
+<main data-id="prefix_main">
+  <figure data-id="prefix_figure"></figure>
+  <div>Hello<span></span></div>
+</main>
+```
+The problem behind this feature is: 
+
+- we want to add automated data-attrs and use them in stage environment 
+- but stage and production builds use the same docker-image, and there is valid CI logic behind that
+- we can detect staging env in runtime, but we can not do so while building
+- so we are stuck to keeping attributes in production
+- at least we want to keep the gentle minimum for QA, 1 attr per component is enough
+
+Components can be defined in this ways:
+
+```jsx
+const Foo = (props) => <main><div>{whatever}<div/><etc /></main>
+```
+
+In such case `<main>` will be marked, child DOM nodes will not, until next React component will be met
+
+
+```jsx
+const Foo = (props) => <Wrapper><div>{whatever}</div><etc /></Wrapper>
+```
+
+In such case `<div>` will be marked, next DOM nodes in the wrapper will not (gentle minimum)
+
+```jsx
+const Foo = (props) => <><div>{whatever}</div><etc /></>
+```
+
+In such case `<div>` should be marked by design, next DOM nodes in the Fragment should not. **Actual behaviour with Fragments is unstable for now, not working as intended in some cases.**
+
+
+</details>
+
 
 ## Via CLI
 
