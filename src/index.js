@@ -85,7 +85,7 @@ module.exports = declare(api => {
             // and ignores inner nodes
             const matchFirstChildRule = firstChildOnly // only use filter if option passed
               ? !previousNodeName || // case of top node in a component: `let A = () => <main ><div /></main>` -> main matches
-                (startsFromUpperCase(previousNodeName) && // case of first child: `<A><main /><div /></A>` -> main matches
+                (startsWithUpperCase(previousNodeName) && // case of first child: `<A><main /><div /></A>` -> main matches
                   previousNodeName == parentNodeName) // but not if previous node is not parent: `<A><main /><B /><div /></A>` -> div not matches
               : true // do not filter anything in case option is missing
 
@@ -152,7 +152,7 @@ function nameGenerator(params, options) {
     .join('_')
 }
 
-function startsFromUpperCase(s) {
+function startsWithUpperCase(s) {
   if (s.length == 0) {
     return false
   }
