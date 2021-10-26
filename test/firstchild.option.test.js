@@ -106,15 +106,14 @@ describe('firstChildOnly examples', function() {
     const code = `
         const A = (props) => <main>{props.children}</main>;
         const B = (props) => <A><figure /><div>{props.children}<span/></div></A>;
-        RD.renderToStaticMarkup(<B>Hello</B>)
-  `
+        RD.renderToStaticMarkup(<B>Hello</B>)`
 
     const babelOutput = babel.transformSync(code, {
       presets: ['@babel/preset-react'],
       plugins: [[plugin, { firstChildOnly: true, dirLevel: 0 }]]
     })
 
-    it('should not add data-id on non-first element following component', function() {
+    it('should match snapshot', function() {
       const output = eval(babelOutput.code)
 
       assert.equal(
@@ -134,7 +133,7 @@ describe('firstChildOnly examples', function() {
       plugins: [[plugin, { firstChildOnly: true, dirLevel: 0 }]]
     })
 
-    it('should not add data-id on non-first element following component', function() {
+    it('should match snapshot', function() {
       const output = eval(babelOutput.code)
 
       assert.equal(
@@ -156,7 +155,7 @@ describe('firstChildOnly examples', function() {
       plugins: [[plugin, { firstChildOnly: true, dirLevel: 0 }]]
     })
 
-    it('should not add data-id on non-first element following component', function() {
+    it('should match snapshot', function() {
       const output = eval(babelOutput.code)
 
       assert.equal(
@@ -177,7 +176,7 @@ describe('firstChildOnly examples', function() {
       plugins: [[plugin, { firstChildOnly: true, dirLevel: 0 }]]
     })
 
-    it('should not add data-id on non-first element following component', function() {
+    it('should match snapshot', function() {
       const output = eval(babelOutput.code)
       assert.equal(
         output,
