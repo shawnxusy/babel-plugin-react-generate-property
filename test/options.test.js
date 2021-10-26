@@ -12,6 +12,10 @@ const ex3 = `<div><div /></div>`
 
 const ex4 = `let App = (props) => <div>{props.children}</div>; <App><div><span/></div></App>`
 
+const ex5 = `<><div /><div /></>`
+
+const ex6 = `let App = (props) => <div>{props.children}</div>; <App><div /><div /></App>`
+
 const ex1b = babel.transformSync(ex1, {
   filename: 'fname.js',
   presets: ['@babel/preset-react'],
@@ -69,6 +73,16 @@ const ex9b = babel.transformSync(ex1, {
   plugins: [[plugin, { omitFileName: true, dirLevel: 0 }]]
 })
 
+const ex10b = babel.transformSync(ex5, {
+  presets: ['@babel/preset-react'],
+  plugins: [[plugin, { firstChildOnly: true, dirLevel: 0 }]]
+})
+
+const ex11b = babel.transformSync(ex6, {
+  presets: ['@babel/preset-react'],
+  plugins: [[plugin, { firstChildOnly: true, dirLevel: 0 }]]
+})
+
 describe('Options functionality', () => {
   describe('Prefix', function() {
     it('should be passed', function() {
@@ -102,17 +116,37 @@ describe('Options functionality', () => {
       assert.equal(output.props.children.props['data-id'], '__div')
     })
 
-    it('should add data-id on first node in container', function() {
+    it('should add data-id on the only node in container', function() {
       const output = eval(ex4b2.code)
       assert.equal(output.props['data-id'], '__div')
     })
 
-    it('should not add data-id on inner nodes', function() {
+    it('should not add data-id on inner nodes of the only node', function() {
       const output = eval(ex4b.code)
       assert.equal(
         output.props.children.props.children.props['data-id'],
         undefined
       )
+    })
+
+    it('should add data-id on first child in container', function() {
+      const output = eval(ex11b.code)
+      assert.equal(output.props.children[0].props['data-id'], '__div')
+    })
+
+    it('should not add data-id on the second child in container', function() {
+      const output = eval(ex11b.code)
+      assert.equal(output.props.children[1].props['data-id'], undefined)
+    })
+
+    it('should add data-id on first child of a fragment', function() {
+      const output = eval(ex10b.code)
+      assert.equal(output.props.children[0].props['data-id'], '__div')
+    })
+
+    it('should not add data-id on second child of a fragment', function() {
+      const output = eval(ex10b.code)
+      assert.equal(output.props.children[1].props['data-id'], undefined)
     })
   })
 
