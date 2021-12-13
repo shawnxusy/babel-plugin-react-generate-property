@@ -85,7 +85,41 @@ $ npm install --save-dev babel-plugin-react-generate-property
 ```
 **customProperty**: Use this to configure which property to add to open tags. By default it would be "data-id".
 
-**dirLevel**: How many levels of the file directory do you want to use for the property value. If you use more, the generated value is more likely to be unique, but you will also incur slightly larger builds. Default to 1 (append only the directory where the target file is located in)
+**customSeparator**: Use this to configure the separator used between generated property value, for example, setting it to "-" would yield something like `<div data-id="Common-Header-div-wrapper" />`. By default it would be "_".
+
+**dirLevel**: How many levels of the file directory do you want to use for the property value. If you use more, the generated value is more likely to be unique, but you will also incur slightly larger builds. Default to 1 (append only the directory where the target file is located in). 
+
+You may also set dirLevel to a negative value, in which case, the plugin will strip the first `-dirLevel` directory values from the beginning, instead of keeping values from the end.
+
+<details>
+<summary>Negative dirLevel example</summary>
+
+Let's say the file to be processed has a relative path of `/src/client/pages/common/tables/MyCustomTable.jsx`.
+
+And the file has content of:
+```jsx
+<View>
+  ...
+</View>
+```
+
+Now if we pass in `dirLevel: 2`, the generated data id would look like:
+```jsx
+<View data-id="common_tables_MyCustomTable_View">
+  ...
+</View>
+```
+
+But if `dirLevel: -2` is passed, the plugin would strip relative path from the beginning, and generate something like:
+```jsx
+<View data-id="client_pages_common_tables_MyCustomTable_View">
+  ...
+</View>
+```
+
+Note that a dirLevel value of `-2` essentially stripped off both the rootDir, and then the `src/` part of the relative path.
+
+</details>
 
 **omitFileName**  (default: `false`): In case you want to omit filename in data-attr
 
