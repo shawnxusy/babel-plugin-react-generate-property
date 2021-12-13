@@ -91,6 +91,7 @@ $ npm install --save-dev babel-plugin-react-generate-property
 
 <details>
 <summary>Negative dirLevel example</summary>
+
 Let's say the file to be processed has a relative path of `/src/client/pages/common/tables/MyCustomTable.jsx`.
 
 And the file has content of:
