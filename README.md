@@ -85,6 +85,8 @@ $ npm install --save-dev babel-plugin-react-generate-property
 ```
 **customProperty**: Use this to configure which property to add to open tags. By default it would be "data-id".
 
+**customSeparator**: Use this to configure the separator used between generated property value, for example, setting it to "-" would yield something like `<div data-id="Common-Header-div-wrapper" />`. By default it would be "_".
+
 **dirLevel**: How many levels of the file directory do you want to use for the property value. If you use more, the generated value is more likely to be unique, but you will also incur slightly larger builds. Default to 1 (append only the directory where the target file is located in)
 
 **omitFileName**  (default: `false`): In case you want to omit filename in data-attr
