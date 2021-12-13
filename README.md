@@ -96,7 +96,6 @@ Let's say the file to be processed has a relative path of `/src/client/pages/com
 
 And the file has content of:
 ```jsx
-// src/client/Components/Common/Header.jsx
 <View>
   ...
 </View>
