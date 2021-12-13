@@ -24,6 +24,8 @@ module.exports = declare(api => {
         } = state.opts
 
         const filename = state.file.opts.filename || '' // filename missing in test env, see tests
+        const rootDir = state.file.opts.root
+        const relativePath = filename.slice(rootDir.length)
 
         const splits = filename.split(slashChar)
         if (!splits || !splits.length) {
@@ -32,8 +34,13 @@ module.exports = declare(api => {
           )
           return
         }
+        const relativePathSplits = relativePath.split(slashChar)
 
-        const dirNames = splits.slice(-1 - dirLevel, -1)
+        // User may specify negative dirLevel, to STRIP the first x layers instead of KEEPING last x layers
+        const dirNames =
+          dirLevel >= 0
+            ? splits.slice(-1 - dirLevel, -1)
+            : relativePathSplits.slice(-dirLevel, -1)
 
         const fileName = splits[splits.length - 1].split('.')[0]
         const fileIdentifier = `${dirNames.join(customSeparator)}${

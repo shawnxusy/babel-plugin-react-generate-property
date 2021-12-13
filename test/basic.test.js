@@ -41,6 +41,24 @@ const ex6b = babel.transformSync(ex2, {
   plugins: [[plugin, { customSeparator: '-' }]]
 })
 
+const ex7b = babel.transformSync(ex2, {
+  filename: 'my/deep/custom/dir/fname.js',
+  presets: ['@babel/preset-react'],
+  plugins: [[plugin, { dirLevel: 2 }]]
+})
+
+const ex8b = babel.transformSync(ex2, {
+  filename: 'my/deep/custom/dir/fname.js',
+  presets: ['@babel/preset-react'],
+  plugins: [[plugin, { dirLevel: -2 }]]
+})
+
+const ex9b = babel.transformSync(ex2, {
+  filename: 'fname.js',
+  presets: ['@babel/preset-react'],
+  plugins: [[plugin, { dirLevel: -2 }]]
+})
+
 describe('Basic functionality', () => {
   describe('DOM node name', function () {
     it('should be read', function () {
@@ -97,6 +115,23 @@ describe('Basic functionality', () => {
         output.props['data-id'],
         'babel-plugin-react-generate-property-fname-App'
       )
+    })
+  })
+
+  describe('Directory level', function () {
+    it('should accept dirLevel of greater than 1', function () {
+      const output = eval(ex7b.code)
+      assert.equal(output.props['data-id'], 'custom_dir_fname_App')
+    })
+
+    it('should accept negative dirLevel', function () {
+      const output = eval(ex8b.code)
+      assert.equal(output.props['data-id'], 'deep_custom_dir_fname_App')
+    })
+
+    it('should accept negative dirLevel and shallow file path', function () {
+      const output = eval(ex9b.code)
+      assert.equal(output.props['data-id'], '_fname_App')
     })
   })
 })
