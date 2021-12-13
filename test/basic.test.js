@@ -35,35 +35,41 @@ const ex5b = babel.transformSync(ex2, {
   plugins: [[plugin, { customProperty: 'data-test-element' }]]
 })
 
+const ex6b = babel.transformSync(ex2, {
+  filename: 'fname.js',
+  presets: ['@babel/preset-react'],
+  plugins: [[plugin, { customSeparator: '-' }]]
+})
+
 describe('Basic functionality', () => {
-  describe('DOM node name', function() {
-    it('should be read', function() {
+  describe('DOM node name', function () {
+    it('should be read', function () {
       const output = eval(ex1b.code)
       assert.equal(output.props['data-id'], '__div')
     })
   })
 
-  describe('React node name', function() {
-    it('should be read', function() {
+  describe('React node name', function () {
+    it('should be read', function () {
       const output = eval(ex2b.code)
       assert.equal(output.props['data-id'], '__App')
     })
   })
 
-  describe('Index', function() {
-    it('should be count and put into the tree', function() {
+  describe('Index', function () {
+    it('should be count and put into the tree', function () {
       const output = eval(ex1b.code)
       assert.equal(output.props.children.props['data-id'], '__div_1')
     })
 
-    it('should not be count in case of different nodes', function() {
+    it('should not be count in case of different nodes', function () {
       const output = eval(ex2b.code)
       assert.equal(output.props.children.props['data-id'], '__div')
     })
   })
 
-  describe('Dirname', function() {
-    it('should be read', function() {
+  describe('Dirname', function () {
+    it('should be read', function () {
       const output = eval(ex3b.code)
       assert.equal(
         output.props['data-id'],
@@ -71,16 +77,26 @@ describe('Basic functionality', () => {
       )
     })
 
-    it('should be ignored in case of dirLevel 0', function() {
+    it('should be ignored in case of dirLevel 0', function () {
       const output = eval(ex4b.code)
       assert.equal(output.props['data-id'], '_fname_App')
     })
   })
 
-  describe('Custom property', function() {
-    it('should be custom', function() {
+  describe('Custom property', function () {
+    it('should be custom', function () {
       const output = eval(ex5b.code)
       assert.equal(output.props['data-test-element'], '__App')
+    })
+  })
+
+  describe('Custom separator', function () {
+    it('should be custom', function () {
+      const output = eval(ex6b.code)
+      assert.equal(
+        output.props['data-id'],
+        'babel-plugin-react-generate-property-fname-App'
+      )
     })
   })
 })

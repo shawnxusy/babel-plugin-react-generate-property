@@ -11,6 +11,7 @@ module.exports = declare(api => {
         // Get user configs
         const {
           customProperty = 'data-id',
+          customSeparator = '_',
           slashChar = '/',
           dirLevel = 1,
           addModuleClassNames = false,
@@ -35,8 +36,8 @@ module.exports = declare(api => {
         const dirNames = splits.slice(-1 - dirLevel, -1)
 
         const fileName = splits[splits.length - 1].split('.')[0]
-        const fileIdentifier = `${dirNames.join('_')}${
-          omitFileName ? '' : `_${fileName}`
+        const fileIdentifier = `${dirNames.join(customSeparator)}${
+          omitFileName ? '' : `${customSeparator}${fileName}`
         }`
         let previousNodeName = ''
         let index = 0
@@ -58,7 +59,8 @@ module.exports = declare(api => {
               const classNames = classNodes
                 .map(x => x?.value?.expression?.property?.name)
                 .filter(Boolean)
-              className = classNames.length > 0 ? classNames.join('_') : ''
+              className =
+                classNames.length > 0 ? classNames.join(customSeparator) : ''
             }
 
             // Traverse once to get the element node name (div, Header, span, etc)
@@ -98,6 +100,7 @@ module.exports = declare(api => {
             if (!dataIDDefined && nodeName && nodeName !== 'Fragment') {
               const params = {
                 path: fileIdentifier,
+                customSeparator,
                 nodeName,
                 previousNodeName,
                 index,
@@ -133,6 +136,7 @@ module.exports = declare(api => {
 function nameGenerator(params, options) {
   const prefix = options.prefix || null
   const regexPrefix = params.regex || null
+  const separator = params.customSeparator || '_'
 
   const path = params.path || null
   const nodeName = options.ignoreNodeNames ? null : params.nodeName || null
@@ -149,7 +153,7 @@ function nameGenerator(params, options) {
 
   return [prefix, regexPrefix, path, nodeName, index, className]
     .filter(Boolean)
-    .join('_')
+    .join(separator)
 }
 
 function startsWithUpperCase(s) {
