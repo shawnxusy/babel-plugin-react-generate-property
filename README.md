@@ -103,7 +103,7 @@ And the file has content of:
 
 Now if we pass in `dirLevel: 2`, the generated data id would look like:
 ```jsx
-<View data-id="tables_MyCustomTable_View">
+<View data-id="common_tables_MyCustomTable_View">
   ...
 </View>
 ```
