@@ -1,3 +1,4 @@
+const path = require('path')
 const { declare } = require('@babel/helper-plugin-utils')
 const { types: t } = require('@babel/core')
 
@@ -12,7 +13,7 @@ module.exports = declare(api => {
         const {
           customProperty = 'data-id',
           customSeparator = '_',
-          slashChar = '/',
+          slashChar = path.sep,
           dirLevel = 1,
           addModuleClassNames = false,
           prefix = '',
@@ -30,7 +31,7 @@ module.exports = declare(api => {
         const splits = filename.split(slashChar)
         if (!splits || !splits.length) {
           console.error(
-            'babel-plugin-react-generate-property plugin error: File path is not valid. If you are on Windows, you might need to specify backslash as slashChar in options.'
+            'babel-plugin-react-generate-property plugin error: File path is not valid'
           )
           return
         }

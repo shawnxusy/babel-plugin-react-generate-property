@@ -72,7 +72,7 @@ $ npm install --save-dev babel-plugin-react-generate-property
           "babel-plugin-react-generate-property", {
             "customProperty": "data-dev",
             "dirLevel": 2,
-            "slashChar": "\",
+            "slashChar": "\\",
             "addModuleClassNames": true,
             "prefix": "myPrefix",
             "firstChildOnly": false
@@ -123,7 +123,7 @@ Note that a dirLevel value of `-2` essentially stripped off both the rootDir, an
 
 **omitFileName**  (default: `false`): In case you want to omit filename in data-attr
 
-**slashChar**: Default to "/", if you are on Windows, use "\".
+**slashChar**: Default to OS-specific path separator character.
 
 **addModuleClassNames**  (default: `false`) : In case you use css-modules and want to add className to data-attribute:
 
