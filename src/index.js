@@ -120,7 +120,7 @@ module.exports = declare(api => {
               }
 
               filteringOptionsCheck &&
-                jsxPath.node.openingElement.attributes.push(
+                jsxPath.node.openingElement.attributes.unshift(
                   t.jSXAttribute(
                     t.jSXIdentifier(customProperty),
                     t.stringLiteral(nameGenerator(params, state.opts))
